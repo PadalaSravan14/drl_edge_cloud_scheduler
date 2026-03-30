@@ -139,14 +139,3 @@ python experiments/run_scalability.py
 | Greedy-Energy | baselines/greedy_energy.py | Minimum energy assignment |
 
 ---
-
-## Citation
-
-```
-@article{sravan2025drl,
-  title={DRL-Based Multi-Objective Task Scheduling for Edge-Cloud Computing: Latency, Energy, and SLA Optimisation},
-  author={Padala Sravan and Mohammed Ali Shaik},
-  journal={SR University},
-  year={2026}
-}
-```
