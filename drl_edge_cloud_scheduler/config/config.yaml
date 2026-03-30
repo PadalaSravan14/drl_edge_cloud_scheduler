@@ -1,0 +1,103 @@
+environment:
+  num_edge_devices: 20
+  num_cloud_servers: 3
+  max_pending_tasks: 10
+  edge_cpu_range: [1000, 8000]
+  edge_mem_range: [512, 4096]
+  edge_energy_range: [50, 200]
+  edge_power_range: [5, 20]
+  cloud_cpu_range: [8000, 32000]
+  cloud_mem_range: [4096, 65536]
+  task_cpu_range: [1000, 10000]
+  task_mem_range: [100, 512]
+  task_deadline_range: [1, 10]
+  network_latency_range: [1, 100]
+  network_bandwidth_range: [1, 1000]
+  queue_threshold: 10
+  failure_probability: 0.05
+
+workload:
+  arrival_rate_range: [10, 100]
+  synthetic_num_tasks: 1000
+  burst_step: 500
+  burst_multiplier: 2.0
+  episode_max_steps: 200
+
+dqn:
+  learning_rate: 0.001
+  gamma: 0.99
+  epsilon_start: 1.0
+  epsilon_min: 0.01
+  epsilon_decay: 0.995
+  batch_size: 64
+  replay_buffer_size: 50000
+  target_update_freq: 1000
+  hidden_sizes: [256, 256]
+  use_lstm: false
+  use_pca: true
+  pca_variance: 0.95
+  weight_init: "he"
+
+reward:
+  base_weights:
+    latency: 0.35
+    energy: 0.25
+    sla: 0.30
+    overload: 0.10
+  peak_load_threshold: 0.80
+  off_peak_threshold: 0.40
+  peak_queue_threshold: 80
+  peak_sla_boost: 1.40
+  peak_overload_boost: 1.40
+  offpeak_energy_boost: 1.30
+  highpriority_latency_boost: 1.35
+  highpriority_sla_boost: 1.35
+
+ddqn:
+  learning_rate: 0.001
+  gamma: 0.99
+  epsilon_start: 1.0
+  epsilon_min: 0.01
+  epsilon_decay: 0.995
+  batch_size: 64
+  replay_buffer_size: 50000
+  target_update_freq: 1000
+  hidden_sizes: [256, 256]
+
+ppo:
+  learning_rate: 0.0003
+  gamma: 0.99
+  clip_epsilon: 0.2
+  epochs: 10
+  batch_size: 64
+  hidden_sizes: [256, 256]
+  entropy_coeff: 0.01
+  value_loss_coeff: 0.5
+  max_grad_norm: 0.5
+  rollout_steps: 200
+
+training:
+  num_episodes: 2000
+  min_buffer_size: 64
+  save_freq: 100
+  log_freq: 10
+  convergence_window: 100
+  convergence_threshold: 0.01
+  results_dir: "results"
+  model_dir: "results/models"
+
+evaluation:
+  num_test_episodes: 10
+  statistical_runs: 3
+  random_seeds: [42, 123, 789]
+
+scalability:
+  model_compression:
+    pruning_threshold: 0.01
+    quantization_bits: 8
+  domain_randomization: true
+  transfer_learning_freeze_layers: 2
+
+hardware:
+  device: "cuda"
+  num_workers: 4
